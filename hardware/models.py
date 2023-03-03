@@ -13,6 +13,8 @@ class Category(models.Model):
     is_featured = models.BooleanField(verbose_name="Is Featured?")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created Date")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Updated Date")
+    
+    
 
     class Meta:
         verbose_name_plural = 'Categories'
@@ -70,6 +72,15 @@ STATUS_CHOICES = (
     ('Delivered', 'Delivered')
 )
 
+class Address(models.Model):
+    user = models.ForeignKey(User, verbose_name="User", on_delete=models.CASCADE)
+    locality = models.CharField(max_length=150, verbose_name="Nearest Location")
+    city = models.CharField(max_length=150, verbose_name="City")
+    state = models.CharField(max_length=150, verbose_name="State")
+
+    def __str__(self):
+        return self.locality
+
 
 class Order(models.Model):
     user = models.ForeignKey(User, verbose_name="User", on_delete=models.CASCADE)
@@ -101,10 +112,7 @@ class Cart(models.Model):
         return self.quantity * self.product.price
    
 
-# class taxes(models.Model):
-#     GST 
-#     CGST
-#     SGST
+
 
 
 

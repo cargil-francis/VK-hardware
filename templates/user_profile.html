@@ -1,0 +1,114 @@
+ {% extends 'base.html' %}
+{% load static %}
+
+    {% block content %}
+      <!--================Home Banner Area =================-->
+  <!-- breadcrumb start-->
+  <section class="breadcrumb breadcrumb_bg">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <div class="breadcrumb_iner">
+            <div class="breadcrumb_iner_item">
+              <h2>User Profile</h2>
+              <p>Home <span>-</span> User Profile</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- breadcrumb start-->
+    <section class="confirmation_part padding_top">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-12">
+             <!-- <div class="confirmation_tittle">
+                <span>Thank you. Your order has been received.</span>
+              </div>-->
+            </div>
+            <div class="col-lg-6 col-lx-4">
+              <div class="single_confirmation_details">
+                <h4>User Details</h4>
+                <ul>
+                  <li>
+                    <p>Username</p><span>: {{request.user.username}}</span>
+                  </li>
+                  <li>
+                    <p>Email</p><span>: {{request.user.email}}</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-lg-6 col-lx-4">
+              <div class="single_confirmation_details">
+                <h4>Billing Address {{forloop.counter}} <i> <a href="{% url 'hardware:add-address' %}"class='fa fa-plus-square'></a></i></h4>
+                <hr>
+                {% if addresses %}
+                    {% for address in addresses %}
+
+
+                <h4> Address {{forloop.counter}} <i> <a href="{% url 'hardware:remove-address' address.id %}"class='fa fa-trash'></a></i></h4>
+                <ul>
+                  <li>
+                    <p>Street</p><span>: {{address.locality}}</span>
+                  </li>
+                  <li>
+                    <p>city</p><span>:{{address.city}} </span>
+                  </li>
+                  <li>
+                    <p>State</p><span>: {{address.state}}</span>
+                  </li>
+                  
+                  <hr>
+                  {% endfor %}
+                  {% else %}
+                  <div class="text-danger">
+                    Address not Added.
+                  </div>
+                  {% endif %}
+                </ul>
+              </div>
+            </div>
+            
+           
+          </div>
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="order_details_iner">
+                <h3>Order Details</h3>
+                <table class="table table-borderless">
+                  <thead>
+                    <tr>
+                      <th scope="col" colspan="2">#</th>
+                      <th scope="col">Title</th>
+                      <th scope="col">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% if orders %}
+                    {% for order in orders %}
+                    <tr>
+                      <th colspan="2"><span>{{order.product.title}}{{forloop.counter}}</span></th>
+                      <th>{{order.product.title}}</th>
+                      <th> <span>{{order.status}}</span></th>
+                    </tr>
+                    {% endfor %}
+                    {% else %}
+                    <tr>
+                        <td class="text-danger" colspan="3">You've not Ordered anything yet.</td>
+                      </tr>
+                      {% endif %}
+                   
+                  </tbody>
+                 
+                
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+    {% endblock content %}

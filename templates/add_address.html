@@ -1,0 +1,69 @@
+
+{% extends 'base.html' %}
+{% load static %}
+    
+    {% block content %}
+<!--================Home Banner Area =================-->
+  <!-- breadcrumb start-->
+  <section class="breadcrumb breadcrumb_bg">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <div class="breadcrumb_iner">
+            <div class="breadcrumb_iner_item">
+              <h2>Add Address</h2>
+              <p>Home <span>-</span>Address</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- breadcrumb start-->
+
+<section class="contact-section padding_top">
+    <div class="container">
+                     <div class="d-none d-sm-block mb-5 pb-4">
+                      
+
+      </div> 
+
+
+      <div class="row">
+        <div class="col-12">
+          <h2 class="contact-title">Address</h2>
+        </div>
+        <div class="col-lg-8">
+          <form class="form-contact contact_form" method="post" id="contactForm" action="{% url 'hardware:add-address' %}" novalidate="novalidate">
+           <fieldset>
+            {% csrf_token %}
+
+            {% for fm in form %}
+            <div class="row">
+              <div class="col-12">
+                <div class="form-group">
+                    {{fm.label_tag}}
+                            {{fm}}
+
+                  
+            </div>
+            {% endfor %}
+            <!-- <div class="form-group mt-3"> -->
+              <button class="btn_3 button-contactForm" type="submit">Submit</button>
+            <!-- </div> -->
+        </fieldset> 
+
+         {% if form.non_field_errors %}
+                {% for error in non_field_errors %}
+                    <p class="alert alert-danger my-3">
+                        {{error}}
+                    </p>
+                {% endfor %}
+              {% endif %}
+          </form>
+        </div>
+        
+      </div>
+    </div>
+  </section>
+  {% endblock content %}

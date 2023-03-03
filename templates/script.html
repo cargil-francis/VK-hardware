@@ -1,6 +1,9 @@
 {% load static %}
     <!-- jquery plugins here-->
+    {% url 'profile' as url %}
+    {% if not url %}
     <script src="{% static 'js/jquery-1.12.1.min.js' %}"></script>
+    {% endif %}
     <!-- popper js -->
     <script src="{% static 'js/popper.min.js' %}"></script>
     <!-- bootstrap js -->
