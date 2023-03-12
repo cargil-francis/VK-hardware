@@ -7,8 +7,8 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from .forms import AddressForm
 from django.contrib import messages
-
-
+from django.http import JsonResponse
+import json
 
 
 # Create your views here.
@@ -52,6 +52,17 @@ def category_products(request, slug):
     return render(request, 'category_products.html', context)
 
 
+
+def set_session_data(request):
+    if request.method == 'POST':
+        data = json.loads(request.body.decode('utf-8'))
+        address_id = data.get('address_id')
+        print("hello")
+        print(address_id)
+        request.session['address_id'] = address_id
+        return JsonResponse({'success': True})
+    else:
+        return JsonResponse({'success': False})
 
 #Add cart
 
@@ -121,7 +132,9 @@ def cart(request):
     cp = [p for p in Cart.objects.all() if p.user==user]
     if cp:
         for p in cp:
-            temp_amount = (p.quantity * p.product.price)
+            
+            tax_amount = p.product.category.gst_tax * (p.quantity * p.product.price) / 100
+            temp_amount = (p.quantity * p.product.price) + tax_amount
             amount += temp_amount
 
     # Customer Addresses
@@ -142,8 +155,15 @@ def cart(request):
 @login_required
 def profile(request):
     addresses = Address.objects.filter(user=request.user)
+    return render(request, 'user_profile.html', {'addresses':addresses})
+
+#Orders
+
+
+@login_required
+def order(request):
     orders = Order.objects.filter(user=request.user)
-    return render(request, 'user_profile.html', {'addresses':addresses, 'orders':orders})
+    return render(request, 'order.html', { 'orders':orders})
 
 
 
@@ -171,3 +191,21 @@ def remove_address(request, id):
     a.delete()
     messages.success(request, "Address removed.")
     return redirect('hardware:profile')
+
+
+@login_required
+def checkout(request):
+    user = request.user
+    address_id = request.session.get('address_id')
+    print(address_id)
+    for key, value in request.session.items():
+        print(f"{key}: {value}")
+    
+    address = get_object_or_404(Address, id=address_id)
+    cart = Cart.objects.filter(user=user)
+    for c in cart:
+        # Saving all the products from Cart to Order
+        Order(user=user, address=address, product=c.product, quantity=c.quantity).save()
+        # And Deleting from Cart
+        c.delete()
+    return redirect('hardware:orders')

@@ -5,7 +5,7 @@ from .models import Category, Product
 
 
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('title', 'slug', 'category_image', 'is_active', 'is_featured', 'updated_at')
+    list_display = ('title', 'slug', 'category_image', 'gst_tax','is_active', 'is_featured', 'updated_at')
     list_editable = ('slug', 'is_active', 'is_featured')
     list_filter = ('is_active', 'is_featured')
     list_per_page = 10
