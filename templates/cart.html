@@ -172,7 +172,7 @@
                 <td>
                   <div class="shipping_box">
                     {% if not addreses %}
-                    <h5>Add address</h5>
+                    <h5>Add address <a href="{% url 'hardware:add-address' %}"class='fa fa-plus-square'></a></h5>
                     {% endif %}
                     {% if addresses %}
                     {% for address in addresses %}
