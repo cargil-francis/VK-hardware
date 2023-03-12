@@ -178,97 +178,98 @@
                     </div>
 
                     <div class="row align-items-center latest_product_inner">
-                       
+                        {% for product in products %}
                         <div class="col-lg-4 col-sm-6">
                             <div class="single_product_item">
-                                <img src="{% static 'img/cuttingwhl.jpeg' %}" alt="">
+                                <img src="{{ product.product_image.url }}" alt="">
                                 <div class="single_product_text">
-                                    <h4>cuttingwhl</h4>
-                                    <h3>Rs. 50</h3>
-                                    <a href="#" class="add_cart">+ View details<i class="ti-heart"></i></a>
+                                    <h4>{{ product.title }}</h4>
+                                    <h3>{{product.price}}</h3>
+                                    <a href="{% url 'hardware:product' product.slug %}" class="add_cart">View Details<i class="ti-heart"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        <!-- <div class="col-lg-4 col-sm-6">
+                            <div class="single_product_item">
+                                <img src="img/product/product_2.png" alt="">
+                                <div class="single_product_text">
+                                    <h4>Quartz Belt Watch</h4>
+                                    <h3>$150.00</h3>
+                                    <a href="#" class="add_cart">+ add to cart<i class="ti-heart"></i></a>
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-4 col-sm-6">
                             <div class="single_product_item">
-                                <img src="{% static 'img/Hollowbrick.jpeg' %}" alt="">
+                                <img src="img/product/product_3.png" alt="">
                                 <div class="single_product_text">
-                                    <h4>Hollow Bricks</h4>
-                                    <h3>RS.150.00</h3>
-                                    <a href="#" class="add_cart">+ View details <i class="ti-heart"></i></a>
+                                    <h4>Quartz Belt Watch</h4>
+                                    <h3>$150.00</h3>
+                                    <a href="#" class="add_cart">+ add to cart<i class="ti-heart"></i></a>
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-4 col-sm-6">
                             <div class="single_product_item">
-                                <img src="{% static 'img/mild_iron_wire.jpeg' %}" alt="">
+                                <img src="img/product/product_4.png" alt="">
                                 <div class="single_product_text">
-                                    <h4>Iron Wire</h4>
-                                    <h3>RS.150.00</h3>
-                                    <a href="#" class="add_cart">+ View details<i class="ti-heart"></i></a>
+                                    <h4>Quartz Belt Watch</h4>
+                                    <h3>$150.00</h3>
+                                    <a href="#" class="add_cart">+ add to cart<i class="ti-heart"></i></a>
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-4 col-sm-6">
                             <div class="single_product_item">
-                                <img src="{% static 'img/Red-Brick.jpeg' %}" alt="">
+                                <img src="img/product/product_5.png" alt="">
                                 <div class="single_product_text">
-                                    <h4>Brick Red</h4>
-                                    <h3>RS.150.00</h3>
-                                    <a href="#" class="add_cart">+ View details<i class="ti-heart"></i></a>
+                                    <h4>Quartz Belt Watch</h4>
+                                    <h3>$150.00</h3>
+                                    <a href="#" class="add_cart">+ add to cart<i class="ti-heart"></i></a>
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-4 col-sm-6">
                             <div class="single_product_item">
-                                <img src="{% static 'img/ambuja.jpeg' %}" alt="">
+                                <img src="img/product/product_6.png" alt="">
                                 <div class="single_product_text">
-                                    <h4>Ambuja cement</h4>
-                                    <h3>RS.150.00</h3>
-                                    <a href="#" class="add_cart">+ View details<i class="ti-heart"></i></a>
+                                    <h4>Quartz Belt Watch</h4>
+                                    <h3>$150.00</h3>
+                                    <a href="#" class="add_cart">+ add to cart<i class="ti-heart"></i></a>
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-4 col-sm-6">
                             <div class="single_product_item">
-                                <img src="{% static 'img/asbetoes_everest.jpeg' %}" alt="">
+                                <img src="img/product/product_7.png" alt="">
                                 <div class="single_product_text">
-                                    <h4>Asbetoes Sheet Everest</h4>
-                                    <h3>RS.150.00</h3>
-                                    <a href="#" class="add_cart">+ View details<i class="ti-heart"></i></a>
+                                    <h4>Quartz Belt Watch</h4>
+                                    <h3>$150.00</h3>
+                                    <a href="#" class="add_cart">+ add to cart<i class="ti-heart"></i></a>
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-4 col-sm-6">
                             <div class="single_product_item">
-                                <img src="{% static 'img/1.5gi pipe round_tatasteel.jpeg' %}" alt="">
+                                <img src="img/product/product_8.png" alt="">
                                 <div class="single_product_text">
-                                    <h4>Tatasteel Round Pipe</h4>
-                                    <h3>RS.150.00</h3>
-                                    <a href="#" class="add_cart">+ View details<i class="ti-heart"></i></a>
+                                    <h4>Quartz Belt Watch</h4>
+                                    <h3>$150.00</h3>
+                                    <a href="#" class="add_cart">+ add to cart<i class="ti-heart"></i></a>
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-4 col-sm-6">
                             <div class="single_product_item">
-                                <img src="{% static 'img/asbetos_ramco.jpeg' %}" alt="">
+                                <img src="img/product/product_2.png" alt="">
                                 <div class="single_product_text">
-                                    <h4>Asbetoes Sheet</h4>
-                                    <h3>RS.150.00</h3>
-                                    <a href="#" class="add_cart">+ View details<i class="ti-heart"></i></a>
+                                    <h4>Quartz Belt Watch</h4>
+                                    <h3>$150.00</h3>
+                                    <a href="#" class="add_cart">+ add to cart<i class="ti-heart"></i></a>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-sm-6">
-                            <div class="single_product_item">
-                                <img src="{% static 'img/32mmTMT.jpeg' %}" alt="">
-                                <div class="single_product_text">
-                                    <h4>Kirali TMT 8mm</h4>
-                                    <h3>RS.150.00</h3>
-                                    <a href="#" class="add_cart">+ View details<i class="ti-heart"></i></a>
-                                </div>
-                            </div>
-                        </div>
+                            </div> 
+                        </div>-->
                         <div class="col-lg-12">
                             <div class="pageination">
                                 <nav aria-label="Page navigation example">
@@ -294,6 +295,8 @@
                             </div>
                         </div>
                     </div>
+
+                    
                 </div>
             </div>
         </div>

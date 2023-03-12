@@ -72,12 +72,32 @@
                     <div class="product_count">
                    
                      
-                 <a href="{% url 'hardware:minus-cart' cart.id %}" ><span class="input-number-decrement"> <i class="ti-angle-down"></i></span></a>   
-                    <input class="input-number" type="number" value="{{cart.quantity}}" min="0" max="10">
-                  
-                    
+                 <!-- <a href="{% url 'hardware:minus-cart' cart.id %}" ><span class="input-number-decrement"> <i class="ti-angle-down"></i></span></a>    -->
+                 <input class="input-number" id="quantity-input" type="number" value="{{cart.quantity}}" min="1" max="{{cart.product.stock}}">
+                 <span id="warning-message"></span>
 
-                 <a href ="{% url 'hardware:plus-cart'  cart.id %}"><span class="input-number-increment"> <i class="ti-angle-up"></i></span></a>   
+                 <script>
+                  const quantityInput = document.getElementById('quantity-input');
+                  const warningMessage = document.getElementById('warning-message');
+              
+                  quantityInput.addEventListener('input', () => {
+                      if (parseInt(quantityInput.value) > parseInt(quantityInput.max)) {
+                          warningMessage.textContent = 'Value must be less than {{cart.product.stock}}.';
+                      } else {
+                          warningMessage.textContent = 'Value must be less than {{cart.product.stock}}';
+                      }
+                  });
+
+
+                  quantityInput.addEventListener('change', () => {
+                    warningMessage.textContent='';
+
+                  });
+
+              </script>
+              
+
+                 <!-- <a href ="{% url 'hardware:plus-cart'  cart.id %}"><span class="input-number-increment"> <i class="ti-angle-up"></i></span></a>    -->
                   </div> 
                 </td>
 
@@ -153,7 +173,7 @@
               </tr> -->
               <tr class="bottom_button">
                 <td>
-                  <a class="btn_1" href="#">Update Cart</a>
+                  <a class="btn_1" href="{% url 'hardware:update-cart' cart.id %}">Update Cart</a>
                 </td>
                 <td></td>
                 <td></td>

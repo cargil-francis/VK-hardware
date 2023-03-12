@@ -41,7 +41,13 @@ def detail(request, slug):
 
 def all_categories(request):
     categories = Category.objects.filter(is_active=True)
-    return render(request, 'categories.html', {'categories':categories})
+    products = Product.objects.filter(is_active=True)
+    context = {
+        'products': products,
+        'categories': categories,
+    }
+
+    return render(request, 'categories.html', context)
 
 
 def category_products(request, slug):
@@ -113,6 +119,20 @@ def minus_cart(request, cart_id):
     if request.method == 'GET':
         cp = get_object_or_404(Cart, id=cart_id)
         # Remove the Product if the quantity is already 1
+        if cp.quantity == 1:
+            cp.delete()
+        else:
+            cp.quantity -= 1
+            cp.save()
+    return redirect('hardware:cart')
+
+
+@login_required
+def update_cart(request, cart_id):
+    if request.method == 'GET':
+        cp = get_object_or_404(Cart, id=cart_id)
+        # Remove the Product if the quantity is already 1
+
         if cp.quantity == 1:
             cp.delete()
         else:
