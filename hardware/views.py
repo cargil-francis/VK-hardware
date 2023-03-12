@@ -8,9 +8,6 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from .forms import AddressForm
 from django.contrib import messages
-from django.views.decorators.csrf import csrf_exempt
-from VKhardwares.settings import RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET
-
 
 
 
@@ -55,6 +52,17 @@ def category_products(request, slug):
     return render(request, 'category_products.html', context)
 
 
+
+def set_session_data(request):
+    if request.method == 'POST':
+        data = json.loads(request.body.decode('utf-8'))
+        address_id = data.get('address_id')
+        print("hello")
+        print(address_id)
+        request.session['address_id'] = address_id
+        return JsonResponse({'success': True})
+    else:
+        return JsonResponse({'success': False})
 
 #Add cart
 
@@ -124,7 +132,9 @@ def cart(request):
     cp = [p for p in Cart.objects.all() if p.user==user]
     if cp:
         for p in cp:
-            temp_amount = (p.quantity * p.product.price)
+            
+            tax_amount = p.product.category.gst_tax * (p.quantity * p.product.price) / 100
+            temp_amount = (p.quantity * p.product.price) + tax_amount
             amount += temp_amount
 
     # Customer Addresses
@@ -165,8 +175,15 @@ def cart(request):
 @login_required
 def profile(request):
     addresses = Address.objects.filter(user=request.user)
+    return render(request, 'user_profile.html', {'addresses':addresses})
+
+#Orders
+
+
+@login_required
+def order(request):
     orders = Order.objects.filter(user=request.user)
-    return render(request, 'user_profile.html', {'addresses':addresses, 'orders':orders})
+    return render(request, 'order.html', { 'orders':orders})
 
 
 
@@ -195,23 +212,5 @@ def remove_address(request, id):
     messages.success(request, "Address removed.")
     return redirect('hardware:profile')
 
-@csrf_exempt
-def success(request):
-    user_id=request.POST.get('user_id')
-    user=get_object_or_404(User,id=user_id)
-    address=Address.objects.filter(user=user)
-    for a in address:
-        ad = a
-    Userdetails(user=user,locality=ad.locality,city=ad.city,state=ad.state).save()
-    address=Userdetails.objects.filter(user=user)
-    for a in address:
-        ad = a
-    cart=Cart.objects.filter(user=user)
-    for c in cart:
-        Order(user=user, address=ad, product=c.product, quantity=c.quantity).save()
-        c.delete()
-        #product = Product.objects.filter(id=c.product.id)
-        #product.stock -= c.quantity
-    return render(request,'index.html')
-    
-    
+
+

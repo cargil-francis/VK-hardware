@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load custom_filters %}
     
     {% block content %}
 
@@ -46,6 +47,7 @@
                 <th scope="col">Product</th>
                 <th scope="col">Price</th>
                 <th scope="col">Quantity</th>
+                <th scope="col">GST</th>
                 <th scope="col">Total</th>
               </tr>
             </thead>
@@ -71,12 +73,20 @@
                    
                      
                  <a href="{% url 'hardware:minus-cart' cart.id %}" ><span class="input-number-decrement"> <i class="ti-angle-down"></i></span></a>   
-                    <input class="input-number" type="text" value="{{cart.quantity}}" min="0" max="10">
+                    <input class="input-number" type="number" value="{{cart.quantity}}" min="0" max="10">
+                  
+                    
+
                  <a href ="{% url 'hardware:plus-cart'  cart.id %}"><span class="input-number-increment"> <i class="ti-angle-up"></i></span></a>   
                   </div> 
                 </td>
+
                 <td>
-                  <h5>{{cart.total_price}}</h5>
+                  <h5>{{cart.product.category.gst_tax}}</h5>
+                </td>
+
+                <td>
+                  <h5>{{cart.total_price|round_by_2}}</h5>
                 </td>
               </tr>
               {% endfor %}
@@ -116,7 +126,7 @@
                   <h5>$720.00</h5>
                 </td>
               </tr> -->
-              <!-- <tr>
+              <!-- <tr> 
                 <td>
                   <div class="media">
                     <div class="d-flex">
@@ -163,18 +173,64 @@
                   <h5>Subtotal</h5>
                 </td>
                 <td>
-                  <h5>5200</h5>
+                  <h5>{{amount|round_by_2}}</h5>
                 </td>
               </tr>
               <tr class="shipping_area">
                 <td></td>
                 <td></td>
                 <td>
-                  <h5>Shipping</h5>
+                  <h5>Shipping Address</h5>
                 </td>
                 <td>
                   <div class="shipping_box">
-                    <ul class="list">
+                    {% if not addreses %}
+                    <h5>Add address <a href="{% url 'hardware:add-address' %}"class='fa fa-plus-square'></a></h5>
+                    {% endif %}
+                    {% if addresses %}
+                    {% for address in addresses %}
+                      <div class="mb-3">
+                      <input type="radio" name="address" value="{{address.id}}" onclick="sendDataToSession('{{address.id}}')"> <strong>Address {{forloop.counter}}</strong> <br>
+                      ( {{address.locality}}, {{address.city}}, {{address.state}} )
+                      </div>
+                    {% endfor %}
+                  {% endif %}
+
+                  <script>
+                    function sendDataToSession(addressId) {
+                      console.log(addressId)
+                      var xhr = new XMLHttpRequest();
+                      xhr.open('POST', '/set-session-data/', true);
+                      xhr.setRequestHeader('Content-Type', 'application/json');
+                      xhr.setRequestHeader('X-CSRFToken', getCookie('csrftoken')); // include the CSRF token
+                      xhr.onreadystatechange = function() {
+                        if (xhr.readyState === 4 && xhr.status === 200) {
+                          console.log(xhr.responseText);
+                        }
+                      };
+                      var data = JSON.stringify({'address_id': addressId});
+                      console.log(data)
+                      xhr.send(data);
+                    }
+  
+                    // helper function to get the CSRF cookie
+                    function getCookie(name) {
+                      var cookieValue = null;
+                      if (document.cookie && document.cookie !== '') {
+                        var cookies = document.cookie.split(';');
+                        for (var i = 0; i < cookies.length; i++) {
+                          var cookie = cookies[i].trim();
+                          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                          }
+                        }
+                      }
+                      return cookieValue;
+                    }
+                  </script>
+                  
+                    <!-- <ul class="list">
                       <li>
                         <a href="#">Flat Rate: $5.00</a>
                       </li>
@@ -187,11 +243,11 @@
                       <li class="active">
                         <a href="#">Local Delivery: $2.00</a>
                       </li>
-                    </ul>
-                    <h6>
+                    </ul> -->
+                    <!-- <h6>
                       Calculate Shipping
-                      <i class="fa fa-caret-down" aria-hidden="true"></i>
-                    </h6>
+                      <i class="fa fa-caret-down" aria-hidden="true"></i> -->
+                    <!-- </h6>
                     <select class="shipping_select">
                       <option value="1">Bangladesh</option>
                       <option value="2">India</option>
@@ -203,14 +259,14 @@
                       <option value="4">Select a State</option>
                     </select>
                     <input type="text" placeholder="Postcode/Zipcode" />
-                    <a class="btn_1" href="#">Update Details</a>
+                    <a class="btn_1" href="#">Update Details</a> -->
                   </div>
                 </td>
               </tr>
             </tbody>
           </table>
           <div class="checkout_btn_inner float-right">
-            <a class="btn_1" href="#">Continue Shopping</a>
+            <a class="btn_1" href="{% url 'hardware:categories' %}">Continue Shopping</a>
             <a class="btn_1 checkout_btn_1" href="#">Proceed to checkout</a>
           </div>
 

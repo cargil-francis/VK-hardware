@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -142,7 +143,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = 'hardware:index'
 
 LOGIN_URL='login'
-
-#RAZORPAY INTEGRATION#
-RAZORPAY_KEY_ID = 'rzp_test_NddNaU2EFneibT'
-RAZORPAY_KEY_SECRET = 'fYyLNVwTRviC6ZAzXFLrbX9d'

@@ -9,6 +9,7 @@ class Category(models.Model):
     slug = models.SlugField(max_length=55, verbose_name="Category Slug")
     description = models.TextField(blank=True, verbose_name="Category Description")
     category_image = models.ImageField(upload_to='category', blank=True, null=True, verbose_name="Category Image")
+    gst_tax = models.DecimalField(max_digits=4, decimal_places=2,verbose_name="Gst",null=False)
     is_active = models.BooleanField(verbose_name="Is Active?")
     is_featured = models.BooleanField(verbose_name="Is Featured?")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created Date")
@@ -105,11 +106,18 @@ class Cart(models.Model):
 
     def __str__(self):
         return str(self.user)
+
     
     # Creating Model Property to calculate Quantity x Price
     @property
     def total_price(self):
-        return self.quantity * self.product.price
+        price = self.quantity * self.product.price
+        print("price", price)
+        tax =  self.product.category.gst_tax * price / 100
+        print("tax", tax)
+        total_price = price + tax 
+        print("total", total_price)
+        return total_price
    
 
 
