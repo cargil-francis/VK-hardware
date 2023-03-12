@@ -54,7 +54,7 @@ class Userdetails(models.Model):
     state = models.CharField(max_length=150, verbose_name="State")
 
     def __str__(self):
-        return self.locality
+        return self.locality+", "+self.city+", "+self.state
 
 class Review(models.Model):
     product = models.ForeignKey(Product, verbose_name="Product", on_delete=models.CASCADE)

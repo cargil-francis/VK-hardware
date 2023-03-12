@@ -3,6 +3,19 @@
     
     {% block content %}
 
+    <style>
+      input[type=submit] { 
+        width: 100%; 
+        padding: 12px 20px; 
+        margin: 8px 0; 
+        font-size: 20px;       
+        box-sizing: border-box; 
+        font-weight: bold;
+        background-color: #292929;
+        color: white;
+      }
+      </style>
+
 
  <!--================Home Banner Area =================-->
   <!-- breadcrumb start-->
@@ -200,6 +213,26 @@
             <a class="btn_1" href="#">Continue Shopping</a>
             <a class="btn_1 checkout_btn_1" href="#">Proceed to checkout</a>
           </div>
+
+        </form>
+        <form action="{% url 'hardware:success' %}" method="POST">
+          <script
+              src="https://checkout.razorpay.com/v1/checkout.js"
+              data-key="rzp_test_NddNaU2EFneibT" 
+              data-amount="{{total_amount}}" 
+              data-currency="INR"
+              data-order_id="{{payment.id}}"
+              data-buttontext="Pay with Razorpay"
+              data-name="V K Hardware"
+              data-description="A Wild Sheep Chase is the third novel by Japanese author Haruki Murakami"
+              data-image="https://example.com/your_logo.jpg"
+              data-prefill.name="Gaurav Kumar"
+              data-prefill.email="gaurav.kumar@example.com"
+              data-theme.color="#F37254"
+          ></script>
+          <input type="hidden" custom="Hidden Element" name="hidden"/>
+          <input type="hidden" value="{{ user.id }}" name="user_id"/>
+          </form>
         </div>
       </div>
   </section>
