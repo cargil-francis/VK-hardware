@@ -267,11 +267,11 @@
           </table>
           <div class="checkout_btn_inner float-right">
             <a class="btn_1" href="{% url 'hardware:categories' %}">Continue Shopping</a>
-            <a class="btn_1 checkout_btn_1" href="#">Proceed to checkout</a>
+            <a class="btn_1 checkout_btn_1"  id="checkout_btn" >Cash on delivery</a>
           </div>
 
         </form>
-        <form action="{% url 'hardware:success' %}" method="POST">
+        <form id="checkout_form" action="{% url 'hardware:success' %}" method="POST">
           <script
               src="https://checkout.razorpay.com/v1/checkout.js"
               data-key="rzp_test_NddNaU2EFneibT" 
@@ -289,6 +289,20 @@
           <input type="hidden" custom="Hidden Element" name="hidden"/>
           <input type="hidden" value="{{ user.id }}" name="user_id"/>
           </form>
+
+
+
+          <script>
+            const checkoutBtn = document.getElementById("checkout_btn");
+          
+            checkoutBtn.addEventListener("click", function(event) {
+              event.preventDefault();
+        
+              const checkoutForm = document.getElementById("checkout_form");
+              checkoutForm.submit();
+            });
+          </script>
+
         </div>
       </div>
   </section>

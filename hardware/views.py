@@ -8,6 +8,10 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from .forms import AddressForm
 from django.contrib import messages
+from django.views.decorators.csrf import csrf_exempt
+from VKhardwares.settings import RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET
+import json
+from django.http import JsonResponse
 
 
 
@@ -211,6 +215,44 @@ def remove_address(request, id):
     a.delete()
     messages.success(request, "Address removed.")
     return redirect('hardware:profile')
+
+@csrf_exempt
+def success(request):
+    user_id=request.POST.get('user_id')
+    user=get_object_or_404(User,id=user_id)
+    address=Address.objects.filter(user=user)
+    for a in address:
+        ad = a
+    Userdetails(user=user,locality=ad.locality,city=ad.city,state=ad.state).save()
+    address=Userdetails.objects.filter(user=user)
+    for a in address:
+        ad = a
+    cart=Cart.objects.filter(user=user)
+    for c in cart:
+        Order(user=user, address=ad, product=c.product, quantity=c.quantity).save()
+        c.delete()
+        #product = Product.objects.filter(id=c.product.id)
+        #product.stock -= c.quantity
+    return render(request,'index.html')
+
+
+#search bar
+
+def search(request):
+    categories = Category.objects.filter(is_active=True)
+    query = request.GET.get('q')
+    if query:
+        products = Product.objects.filter(title__icontains=query)
+        print(products.count())
+    else:
+        products = Product.objects.all()
+
+    context = {
+        'products': products,
+        'query': query,
+        'categories': categories
+    }
+    return render(request, 'search.html', context)
 
 
 

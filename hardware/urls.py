@@ -17,11 +17,15 @@ urlpatterns = [
     path('plus-cart/<int:cart_id>/', views.plus_cart, name="plus-cart"),
     path('minus-cart/<int:cart_id>/', views.minus_cart, name="minus-cart"),
     path('cart/', views.cart, name='cart'),
+    path('order/',views.order,name= 'order'),
+    path('success/', views.success, name='success'),
 
 
     path('user_profile/', views.profile, name="profile"),
     path('add-address/', views.AddressView.as_view(), name="add-address"),
     path('remove-address/<int:id>/', views.remove_address, name="remove-address"),
+
+    path('search/',views.search, name='search'),
     
   
    

@@ -22,7 +22,6 @@ class ProductAdmin(admin.ModelAdmin):
     search_fields = ('title', 'category', 'short_description')
     prepopulated_fields = {"slug": ("title", )}
 
-# class CartAdmin(admin.ModelAdmin):
    
 
 

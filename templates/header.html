@@ -97,8 +97,8 @@
         <div class="search_input" id="search_input_box" style="display: none;">
             <div class="container ">
                 <form class="d-flex justify-content-between search-inner">
-                    <input type="text" class="form-control" id="search_input" placeholder="Search Here">
-                    <button type="submit" class="btn"></button>
+                    <input type="text" class="form-control" id="search_input"  name='q' placeholder="Search Here">
+                    <button type="submit"  formaction="{% url 'hardware:search' %}" class="btn"> <a href= "{% url 'hardware:search' %}"></a></button>
                     <span class="ti-close" id="close_search" title="Close Search"></span>
                 </form>
             </div>
