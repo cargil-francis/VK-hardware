@@ -1,5 +1,6 @@
 from django.shortcuts import render,redirect
-from .models import Category, Product,Cart,Address,Order
+from .models import Category,Product,Cart,Address,Order,Userdetails
+from django.contrib.auth.models import User
 from django.shortcuts import get_list_or_404, get_object_or_404
 from django.contrib.auth.decorators import login_required
 import decimal
@@ -7,8 +8,7 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from .forms import AddressForm
 from django.contrib import messages
-from django.http import JsonResponse
-import json
+
 
 
 # Create your views here.
@@ -140,13 +140,33 @@ def cart(request):
     # Customer Addresses
     addresses = Address.objects.filter(user=user)
     print(amount)
+
+    ## -- RAZORPAY INTEGRATION -- ##
+    import razorpay
+    client = razorpay.Client(auth=(RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET))
+    total_amount = amount + shipping_amount
+    DATA = {
+        "amount": int(total_amount)*100,
+        "currency": "INR",
+        "receipt": "receipt#1",
+        "notes": {
+             "key1": "value3",
+            "key2": "value2"
+        }
+    }
+    payment=client.order.create(data=DATA)
+    ## --  ---  -- ##
+
     context = {
+        'user' : user,
         'cart_products': cart_products,
         'amount': amount,
         'shipping_amount': shipping_amount,
         'total_amount': amount + shipping_amount,
         'addresses': addresses,
+        'payment' : payment,
     }
+    
     return render(request, 'cart.html', context)
 
 #User Profile
@@ -193,19 +213,4 @@ def remove_address(request, id):
     return redirect('hardware:profile')
 
 
-@login_required
-def checkout(request):
-    user = request.user
-    address_id = request.session.get('address_id')
-    print(address_id)
-    for key, value in request.session.items():
-        print(f"{key}: {value}")
-    
-    address = get_object_or_404(Address, id=address_id)
-    cart = Cart.objects.filter(user=user)
-    for c in cart:
-        # Saving all the products from Cart to Order
-        Order(user=user, address=address, product=c.product, quantity=c.quantity).save()
-        # And Deleting from Cart
-        c.delete()
-    return redirect('hardware:orders')
+

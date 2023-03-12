@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Product
+from .models import Category, Product, Cart,Order,Userdetails
 
 # Register your models here.
 
@@ -22,7 +22,14 @@ class ProductAdmin(admin.ModelAdmin):
     search_fields = ('title', 'category', 'short_description')
     prepopulated_fields = {"slug": ("title", )}
 
+# class CartAdmin(admin.ModelAdmin):
+   
+
+
 
 
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Product, ProductAdmin)
+admin.site.register(Cart)
+admin.site.register(Order)
+admin.site.register(Userdetails)
